@@ -1,6 +1,6 @@
 # Consumo de una API con Lit
 
-Este proyecto muestra cómo crear un componente web con Lit y consumir datos de una API externa. La aplicación consulta un Pokemon en [PokeAPI](https://pokeapi.co/) y muestra su nombre y su imagen.
+Este proyecto muestra cómo crear un componente web con Lit y consumir datos de una API externa. La aplicación consulta a Pikachu en [PokeAPI](https://pokeapi.co/) y muestra su nombre y su imagen.
 
 ## Tecnologias
 
@@ -108,7 +108,7 @@ El metodo `TraerDatos()` realiza la peticion:
 
 ```js
 const response = await fetch(
-  'https://pokeapi.co/api/v2/pokemon/ditto'
+  'https://pokeapi.co/api/v2/pokemon/pikachu'
 )
 ```
 
@@ -116,7 +116,7 @@ El flujo es el siguiente:
 
 1. Se establece `cargando` en `true` para indicar que la peticion comenzo.
 2. Se limpia el valor anterior de `error`.
-3. `fetch()` solicita los datos de Ditto a PokeAPI.
+3. `fetch()` solicita los datos de Pikachu a PokeAPI.
 4. `response.ok` comprueba si la respuesta HTTP fue correcta.
 5. `response.json()` convierte la respuesta a un objeto JavaScript.
 6. El objeto recibido se guarda en `this.datos`.
@@ -169,17 +169,17 @@ connectedCallback() {
 }
 ```
 
-La API ya no se consulta al cargar la pagina. El componente conserva los datos iniciales y no muestra la respuesta de Ditto. Vuelve a descomentar la linea para recuperar el comportamiento normal.
+La API ya no se consulta al cargar la pagina. El componente conserva los datos iniciales y no muestra la respuesta de Pikachu. Vuelve a descomentar la linea para recuperar el comportamiento normal.
 
 ### 2. Probar otro Pokemon
 
 Cambia el nombre final de la URL en `TraerDatos()`:
 
 ```js
-const response = await fetch('https://pokeapi.co/api/v2/pokemon/pikachu');
+const response = await fetch('https://pokeapi.co/api/v2/pokemon/ditto');
 ```
 
-La interfaz debe mostrar `pikachu` y su imagen. Tambien puedes probar con `bulbasaur`, `charmander` o cualquier Pokemon disponible en PokeAPI.
+La interfaz debe mostrar `ditto` y su imagen. Tambien puedes probar con `bulbasaur`, `charmander` o cualquier Pokemon disponible en PokeAPI.
 
 ### 3. Probar el estado de carga
 
@@ -238,7 +238,7 @@ componente.datos = {
 
 El encadenamiento opcional de `this.datos.sprites?.front_default` evita que el componente falle cuando no existe la propiedad `front_default`.
 
-Al terminar las pruebas, restaura la URL de Ditto y elimina los retrasos o cambios temporales.
+Al terminar las pruebas, restaura la URL de Pikachu y elimina los retrasos o cambios temporales.
 
 ## Ideas principales de Lit que muestra este proyecto
 
