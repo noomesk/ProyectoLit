@@ -35,7 +35,7 @@ export class MyElement extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    //this.TraerDatos();
+    this.TraerDatos();
 
   }
 
@@ -46,7 +46,7 @@ export class MyElement extends LitElement {
   
    
     try {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon/ditto');
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon/pikachu');
        if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
        }
