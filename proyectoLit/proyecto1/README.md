@@ -141,18 +141,9 @@ this.datos.sprites?.front_default
 
 utiliza encadenamiento opcional. El operador `?.` evita que el programa falle si `sprites` todavia no existe.
 
-## Activar la peticion
+## Carga automatica
 
-En el proyecto, la llamada automatica esta preparada en `connectedCallback()`, pero actualmente se encuentra comentada:
-
-```js
-connectedCallback() {
-  super.connectedCallback();
-  //this.TraerDatos();
-}
-```
-
-Para que la API se consulte al cargar el componente, hay que descomentar esa linea:
+La peticion se inicia cuando el componente se incorpora al documento:
 
 ```js
 connectedCallback() {
@@ -162,6 +153,92 @@ connectedCallback() {
 ```
 
 `connectedCallback()` es un ciclo de vida de los componentes web. Lit lo ejecuta cuando el elemento se incorpora al documento. `super.connectedCallback()` permite que la clase base de Lit complete su propia inicializacion.
+
+## Hacer pruebas
+
+Las siguientes pruebas sirven para observar como cambia el estado del componente. Despues de cada cambio, guarda el archivo y revisa el resultado en el navegador.
+
+### 1. Probar que la peticion se inicia
+
+Comenta temporalmente la llamada en `connectedCallback()`:
+
+```js
+connectedCallback() {
+  super.connectedCallback();
+  //this.TraerDatos();
+}
+```
+
+La API ya no se consulta al cargar la pagina. El componente conserva los datos iniciales y no muestra la respuesta de Ditto. Vuelve a descomentar la linea para recuperar el comportamiento normal.
+
+### 2. Probar otro Pokemon
+
+Cambia el nombre final de la URL en `TraerDatos()`:
+
+```js
+const response = await fetch('https://pokeapi.co/api/v2/pokemon/pikachu');
+```
+
+La interfaz debe mostrar `pikachu` y su imagen. Tambien puedes probar con `bulbasaur`, `charmander` o cualquier Pokemon disponible en PokeAPI.
+
+### 3. Probar el estado de carga
+
+Antes de `fetch()`, agrega temporalmente un retraso:
+
+```js
+await new Promise((resolve) => setTimeout(resolve, 2000));
+```
+
+Durante esos dos segundos, `cargando` es `true` y `render()` muestra `Cargando...`. Despues se muestran los datos recibidos.
+
+### 4. Probar un error HTTP
+
+Cambia la URL para solicitar un recurso que no existe:
+
+```js
+const response = await fetch('https://pokeapi.co/api/v2/pokemon/no-existe');
+```
+
+PokeAPI respondera con un error 404. Como `response.ok` sera `false`, el codigo lanzara un error y la interfaz mostrara el estado de error.
+
+### 5. Probar un error de red
+
+Desconecta temporalmente la red o cambia el dominio de la URL por uno inexistente:
+
+```js
+const response = await fetch('https://dominio-inexistente.test/pokemon');
+```
+
+En este caso `fetch()` rechazara la promesa y el bloque `catch` guardara el error en `this.error`.
+
+### 6. Probar la actualizacion reactiva
+
+Abre las herramientas de desarrollo del navegador y ejecuta:
+
+```js
+const componente = document.querySelector('my-element');
+componente.datos = {
+  name: 'pokemon de prueba',
+  sprites: { front_default: '' }
+};
+```
+
+Al cambiar `datos`, Lit vuelve a ejecutar `render()` y actualiza el contenido mostrado. Esta prueba demuestra que las propiedades declaradas en `static properties` son reactivas.
+
+### 7. Probar la imagen opcional
+
+En la consola del navegador, prueba un objeto sin imagen:
+
+```js
+componente.datos = {
+  name: 'sin imagen',
+  sprites: {}
+};
+```
+
+El encadenamiento opcional de `this.datos.sprites?.front_default` evita que el componente falle cuando no existe la propiedad `front_default`.
+
+Al terminar las pruebas, restaura la URL de Ditto y elimina los retrasos o cambios temporales.
 
 ## Ideas principales de Lit que muestra este proyecto
 
