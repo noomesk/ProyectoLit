@@ -1,1 +1,0 @@
-//Intermedio: varias propiedades y distintos tipos
